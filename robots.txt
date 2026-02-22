@@ -1,0 +1,10 @@
+User-agent: *
+Disallow:
+
+User-agent: Googlebot
+Disallow:
+
+User-agent: GoogleScholar
+Disallow:
+
+Sitemap: https://www.avensonline.org/sitemap.xml

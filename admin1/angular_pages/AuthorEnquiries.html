@@ -1,0 +1,15 @@
+<div id="main-wrapper">
+	<div ng-include="'admin1/angular_pages/navbar.html'"></div>
+	<div class="main-wrap">
+		<div ng-include="'admin1/angular_pages/sidebar1.html'"></div>
+		<div class="main-content">
+			<h1 class="page-header">Signup Enquires</h1>
+			<div>
+				<div class="avens-ui-grid user-enquiries-grid">
+					<div class="loader" ng-if="spinner">Loading...</div>
+					<div ng-if="!spinner && gridOptions1" ui-grid-edit ui-grid-pagination ui-grid="gridOptions1" class="grid" ui-grid-auto-resize ng-style="getTableHeight()"></div>
+				</div> 	
+			</div>
+		</div>
+	</div>
+</div>

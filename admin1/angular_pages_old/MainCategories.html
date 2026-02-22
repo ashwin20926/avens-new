@@ -1,0 +1,22 @@
+<div id="main-wrapper">
+	<div ng-include="'admin1/angular_pages/navbar.html'"></div>
+	<div class="main-wrap">
+		<div ng-include="'admin1/angular_pages/sidebar1.html'"></div>
+		<div class="main-content">
+			<h1 class="page-header">Main Categories</h1>
+			<div class="create-btn"><a href="#/EditMainCategory/0" class="btn btn-primary">Create Main Category</a></div>
+			<div ng-controller="MainCategoriesController">
+				<table class="table table-striped">
+				<tbody>
+				<tr><th>Category Id</th><th>Category Name</th><th>Created Date</th><th>Edit</th><th>Delete</th></tr>
+				<tr ng-repeat="(key,val) in main_categories">				
+				<td>{{val.category_id}}</td><td>{{val.category_name}}</td><td>{{val.created_date}}</td>
+				<td><a href="#/EditMainCategory/{{val.category_id}}">Edit</a></td>
+				<td><!-- <a href="#/DeleteMainCategory/{{val.category_id}}"> -->Delete<!-- </a> --></td>
+				</tr>
+				</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,67 @@
+<div id="main-wrapper">
+	<div ng-include="'admin1/angular_pages/navbar.html'"></div>
+	<div class="main-wrap">
+		<div ng-include="'admin1/angular_pages/sidebar1.html'"></div>
+		<div class="main-content">
+			<h1 class="page-header">{{title}} Citation</h1>
+			<div class="create-btn text">
+				<a href="#/ArticleCitations">Back</a>				
+			</div>
+			<div>
+				<div class="form-box">
+						<form class="form-horizontal" name="article_citation_form" id="article_citation_form" method="post" novalidate>
+						<div class="form-group">
+							<label for="category_name" class="col-sm-4 control-label">Journal Name</label>
+							<div class="col-sm-8">														
+								<select class="form-control" ng-model="article_citation.journal_id" name="journal_id" ng-change="getJournalArticles(article_citation.journal_id)">
+									<option value="">Select journal</option>
+								  <optgroup label="Medical">
+								    <option ng-repeat="j in journal_info" ng-selected="article_citation.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Medical'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>
+								  <optgroup label="Biotechnology">
+								    <option ng-repeat="j in journal_info" ng-selected="article_citation.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Biotechnology'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>
+								  <optgroup label="Biology">
+								    <option ng-repeat="j in journal_info" ng-selected="article_citation.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Biology'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>
+								  <optgroup label="Pharmaceutical">
+								    <option ng-repeat="j in journal_info" ng-selected="article_citation.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Pharmaceutical'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>								  
+								</select>
+								<span style="color:red" ng-show="article_citation_form.journal_id.$dirty"><span ng-show="article_citation_form.journal_id.$error.required">This is required.</span></span>
+							</div>
+						</div>						
+						<div class="form-group">
+							<label for="article_id" class="col-sm-4 control-label">Article Name</label>							
+							<div class="col-sm-8">															
+								<select class="form-control" ng-model="article_citation.article_id" name="article_id" ng-disabled="!article_citation.journal_id">
+									<option value="">Select Article</option>
+									<option  ng-selected="article_citation.article_id==ai.id?'selected':''" ng-repeat="ai in journal_articles" value="{{ai.id}}">{{ai.article_title}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="citation_link" class="col-sm-4 control-label">Citation Link</label>
+							<div class="col-sm-8">															
+								<input type="text" class="form-control" ng-model="article_citation.citation_link" name="citation_link">			
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="citation_count" class="col-sm-4 control-label">Citation count</label>
+							<div class="col-sm-8">															
+								<input type="text" class="form-control" ng-model="article_citation.citated_count" name="citated_count">		
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-4 col-sm-8">        
+							<button ng-click="saveJournalCitation(article_citation)" class="btn btn-primary">{{buttonText}}</button>
+							<span class="server-response"><span class="loader" ng-if="server_msg"></span><span ng-bind="server_msg"></span></span>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

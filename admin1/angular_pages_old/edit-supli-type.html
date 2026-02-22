@@ -1,0 +1,55 @@
+
+<div id="main-wrapper">
+	<div ng-include="'admin1/angular_pages/navbar.html'"></div>
+	<div class="main-wrap">
+		<div ng-include="'admin1/angular_pages/sidebar1.html'"></div>
+		<div class="main-content">
+			<h1 class="page-header">Latest Articles</h1>
+			<div class="create-btn text">
+				<a href="#/addSupliTypes">Back to Supli Types</a>				
+			</div>
+			<div>
+				<div class="form-box">					
+					<form class="form-horizontal" enctype="multipart/form-data" name="supli_type_form" method="post" novalidate
+					>					
+						<div class="form-group">
+						
+							<label for="issn_number" class="col-sm-3 control-label">Supli Name*</label>							
+							<div class="col-sm-9">
+								<input type="text" class="form-control" ng-model="suplitype.supli_name" id="article_name" name="article_name" required>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="journal_name" class="col-sm-3 control-label">Journal Name</label>
+							<div class="col-sm-9">							
+								<select class="form-control" ng-model="suplitype.journal_id" name="journal_id">
+								  
+								  <optgroup label="Medical">
+								    <option ng-repeat="j in journal_info" ng-selected="suplitype.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Medical'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>
+								  <optgroup label="Biotechnology">
+								    <option ng-repeat="j in journal_info" ng-selected="suplitype.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Biotechnology'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>
+								  <optgroup label="Biology">
+								    <option ng-repeat="j in journal_info" ng-selected="suplitype.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Biology'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>
+								  <optgroup label="Pharmaceutical">
+								    <option ng-repeat="j in journal_info" ng-selected="suplitype.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Pharmaceutical'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>								  
+								</select>
+								<span style="color:red" ng-show="journal_post_form.journal_id.$dirty"><span ng-show="journal_post_form.journal_id.$error.required">This is required.</span></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-10">
+								<input type="submit" ng-click="saveSuplitype(suplitype)" name="insert" value="Save" class="btn btn-primary">
+							</div>
+						</div>
+					</form>						
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

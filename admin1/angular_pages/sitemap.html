@@ -1,0 +1,27 @@
+<div id="main-wrapper">
+	<div ng-include="'admin1/angular_pages/navbar.html'"></div>
+	<div class="main-wrap">
+		<div ng-include="'admin1/angular_pages/sidebar1.html'"></div>
+		<div class="main-content">
+		<h1 class="page-header">Sitemap Tracking</h1>
+			<div>
+			
+				<div ng-if="suplitypes">
+
+					<table class="table table-striped">
+				<tbody>
+				<tr><th>Sitemap Generated On</th><th></th><th></th><th></th><th></th><th></th></tr></tbody>
+				<tr ng-repeat="(key,val) in suplitypes">				
+				{{val}}
+				<td>{{val.created_at}}</td>
+				<td></td>
+				<td></td><td></td><td></td><td></td>
+				</tr>
+				</table>
+
+				</div>
+				<div ng-show="suplitypes.length == '0'">There are no Supli Types found.</div>
+			</div>
+		</div>
+	</div>
+</div>

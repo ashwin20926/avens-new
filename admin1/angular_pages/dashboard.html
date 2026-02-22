@@ -1,0 +1,14 @@
+<div id="main-wrapper">
+	<div ng-include="'admin1/angular_pages/navbar.html'"></div>
+	<div class="main-wrap">
+		<div ng-include="'admin1/angular_pages/sidebar1.html'"></div>
+		<div class="main-content">
+			<h1 class="page-header">Dashboard</h1>
+			<div class="count-div" ng-controller="dashboardController">
+				<p>Categories ({{count.category_count}})</p>
+				<p>Journals ({{count.journal_count}})</p>
+				<p>pages (250)</p>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,135 @@
+<?php
+/**
+* Template Name: Journals
+* Description: A Page Template that adds a sidebar to pages
+*
+* @package WordPress
+* @subpackage Twenty_Eleven
+* @since Twenty Eleven 1.0
+*/
+get_header();
+?>
+<script type="text/javascript">
+jQuery(document).ready(function(){	
+	var sort_type= null;
+	function intial_load(){
+		jQuery("input[name=category-wise]").attr('checked',true);
+		jQuery('#journal-ajax').html('<div class="text-center" style="padding:10px;margin-top:20px;"><strong>Loading..</strong></div>');
+		jQuery.get("<?php echo bloginfo('url'); ?>/journal-ajax/",
+		{
+			sort_type: 'category-wise'			        
+		},
+		function(data, status){
+			if(status == 'success'){
+				jQuery('#journal-ajax').html(data);
+			}					    			      
+		});
+	}
+	if(sort_type == '' || sort_type == null){
+		intial_load();		
+	}
+	else{
+
+		var sort_array = ['medical','biotechnology','biology','pharmaceutical'];
+		
+		var sort_type = "<?php echo $_GET['sort_type']; ?>";
+		if(sort_type == 'medical' &&  jQuery.inArray( "medical", sort_array ) > -1){
+			jQuery("input[name=medical]").attr('checked',true);	
+		}
+		else if(sort_type == 'biotechnology' &&  jQuery.inArray( "medical", sort_array ) > -1){
+			jQuery("input[name=biotechnology]").attr('checked',true);		
+		}
+		else if(sort_type == 'biology' &&  jQuery.inArray( "medical", sort_array ) > -1){
+			jQuery("input[name=biology]").attr('checked',true);		
+		}
+		else if(sort_type == 'pharmaceutical' &&  jQuery.inArray( "medical", sort_array ) > -1){
+			jQuery("input[name=pharmaceutical]").attr('checked',true);		
+		}
+		else{
+			intial_load();
+		}
+		alert("nani");
+		//jQuery("input[name=category-wise]").attr('checked',true);
+		jQuery('#journal-ajax').html('<div class="text-center" style="padding:10px;margin-top:20px;"><strong>Loading..</strong></div>');
+		jQuery.get("<?php echo bloginfo('url'); ?>/journal-ajax/",
+		{
+			sort_type: sort_type			        
+		},
+		function(data, status){
+			if(status == 'success'){
+				jQuery('#journal-ajax').html(data);
+			}					    			      
+		});	
+	}
+	jQuery('.sort_journals').on('click',function(){
+		jQuery('.sort_journals').attr('checked',false);
+		jQuery(this).attr('checked',true);
+		var sort_type = jQuery(this).val();
+		jQuery('#journal-ajax').html('<div class="text-center" style="padding:10px;margin-top:20px;"><strong>Loading..</strong></div>');
+		jQuery.get("<?php echo bloginfo('url'); ?>/journal-ajax/",
+		{
+			sort_type: sort_type			        
+		},
+		function(data, status){
+			if(status == 'success'){
+				jQuery('#journal-ajax').html(data);
+			}						    			      
+		});
+	});
+});
+</script>
+<style type="text/css">.affix{position: fixed;top: 0;}</style>
+<div class="container">
+	<div class="row">	
+		<div class="col-sm-4">	
+			<div>				
+				<div id="journal-sidebar" style="padding:25px 30px 30px 0;">
+					<h2>Sort Journals</h2>					
+					<div class="radio">
+						<label>A to Z&nbsp;<input type="radio" class="sort_journals" name="atoz" id="atoz" value="atoz" ></label>
+					</div>					
+					<div class="radio">
+						<label>Category Wise<input type="radio" class="sort_journals" name="category-wise" id="category-wise" value="category-wise" ></label>
+					</div>
+					<div class="radio">
+						<label>A to Z in Category<input type="radio" class="sort_journals" name="atozincat" id="atozincat" value="atozincat"></label>
+					</div><br/>
+					<h2>Filter Journals</h2>
+					<div class="radio">
+						<label>All Categories<input type="radio" name="all-categories"  class="sort_journals" id="all-categories" value="atoz" ></label>
+					</div>
+					<div class="radio">
+						<label>Medical<input type="radio" name="medical"  class="sort_journals" id="medical" value="medical"></label>
+					</div>
+					<div class="radio">
+						<label>Biotechnology<input type="radio" name="biotechnology"  class="sort_journals" id="biotechnology" value="biotechnology"></label>
+					</div>
+					<div class="radio">
+						<label>Biology<input type="radio" name="biology"  class="sort_journals" id="biology" value="biology"></label>
+					</div>
+					<div class="radio">
+						<label>Pharmaceutical<input type="radio" name="pharmaceutical"  class="sort_journals" id="pharmaceutical" value="pharmaceutical"></label>
+					</div>
+				</div>
+				<!-- <img src="<?php echo bloginfo('url'); ?>/wp-content/uploads/2015/03/Rectangle-18-copy.png" class="img-responsive"> -->
+			</div>
+		</div>		
+		<div class="col-sm-8" id="journal-ajax">
+			<?php
+			/*$args = array(
+				'orderby' => 'name',
+				'order' => 'ASC',
+				'exclude' => '11,13,14,65,4,12,1,10',
+				);
+			$categories = get_categories($args);
+			$i= 0;
+			foreach($categories as $category) { 
+				echo '<p><a href="' . get_category_link( $category->term_id ) . '" title="' . sprintf( __( "View all posts in %s" ), $category->name ) . '" ' . '>' . $category->name.'</a> </p> ';				
+			} */			
+			?>
+		</div>
+	</div>
+</div>
+<?php //get_sidebar(); ?>
+
+<?php get_footer(); ?>			

@@ -1,0 +1,22 @@
+<div id="main-wrapper">
+	<div ng-include="'admin1/angular_pages/navbar.html'"></div>
+	<div class="main-wrap">
+		<div ng-include="'admin1/angular_pages/sidebar1.html'"></div>
+		<div class="main-content">
+			<h1 class="page-header">Create Journal</h1>
+			<div class="create-btn"><a href="#/EditJournals/0" class="btn btn-primary">Create Journal</a></div>
+			<div ng-controller="JournalsController">
+				<table class="table table-striped">
+				<tbody>
+				<tr><th>Journal Name</th><th>Journal ISSN Number</th><th>Journal Category</th><th>Created Date</th><th>Edit</th><th>Delete</th></tr></tbody>
+				<tr ng-repeat="(key,val) in main_journals">				
+				{{val}}
+				<td>{{val.journal_name}}</td><td>{{val.issn_number}}</td><td>{{val.category_name}}</td><td>{{val.updated_date}}</td>
+				<td><a href="#/EditJournals/{{val.id}}">Edit</a></td>
+				<td><a href="">Delete</a></td>
+				</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

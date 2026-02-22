@@ -1,0 +1,220 @@
+<script>
+$(document).ready(function(){
+tinymce.init({
+  selector: '.journal-post-editor',
+  height: 500,
+  width: 500,
+  plugins: [
+    'advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table contextmenu paste code'
+  ],
+  toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+  content_css: [
+    '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
+    '//www.tinymce.com/css/codepen.min.css'
+  ]
+});
+});
+</script>
+<div id="main-wrapper">
+	<div ng-include="'admin1/angular_pages/navbar.html'"></div>
+	<div class="main-wrap">
+		<div ng-include="'admin1/angular_pages/sidebar1.html'"></div>
+		<div class="main-content">
+			<h1 class="page-header">FullText Article</h1>
+			<div class="create-btn text">
+				<a href="#/FulltextArticles">Back to Fulltext Articles</a>				
+			</div>
+			<div>
+				<div>					
+					<form class="form-horizontal" enctype="multipart/form-data" name="fulltext_article_form" method="post" novalidate
+					>	
+						<div class="form-group">
+							<label for="post_title" class="col-sm-2 control-label">Fulltext Article name</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" ng-model="fulltext_article.post_title" id="post_title" name="post_title" required>								
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="post_browser_title" class="col-sm-2 control-label">Page title</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" ng-model="fulltext_article.post_browser_title" id="post_browser_title" name="post_browser_title" ng-keyup="getUrlSlug(fulltext_article)" required>								
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="post_browser_title_slug" class="col-sm-2 control-label">Fulltext Article url slug</label>
+							<div class="col-sm-4">
+								<input  readonly type="text" class="form-control" ng-model="fulltext_article.post_browser_title_slug" id="post_browser_title_slug" name="post_browser_title_slug" required>								
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="post_meta_keywords" class="col-sm-2 control-label">Page meta keywords</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" ng-model="fulltext_article.post_meta_keywords" id="post_meta_keywords" name="post_meta_keywords" required>								
+							</div>
+						</div>
+											
+						<div class="form-group">
+							<label for="category_id" class="col-sm-2 control-label">Category Name</label>
+							<div class="col-sm-4">
+								<select class="form-control" name="category_id" ng-model="fulltext_article.category_id">									
+									<option value="10">Medical</option>
+									<option value="20">Biotechnology</option>
+									<option value="30">Biology</option>
+									<option value="40">Pharmaceutical</option>
+								</select>		
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="journal_id" class="col-sm-2 control-label">Journal Name</label>
+							<div class="col-sm-4">
+								  <select class="form-control" ng-model="fulltext_article.journal_id" name="journal_id">
+								  <optgroup label="Medical">
+								    <option ng-repeat="j in journal_info" ng-selected="fulltext_article.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Medical'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>
+								  <optgroup label="Biotechnology">
+								    <option ng-repeat="j in journal_info" ng-selected="fulltext_article.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Biotechnology'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>
+								  <optgroup label="Biology">
+								    <option ng-repeat="j in journal_info" ng-selected="fulltext_article.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Biology'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>
+								  <optgroup label="Pharmaceutical">
+								    <option ng-repeat="j in journal_info" ng-selected="fulltext_article.journal_id==j.id?'selected':''" ng-if="j.category_name == 'Pharmaceutical'" value="{{j.id}}">{{j.journal_name}}</option>    
+								  </optgroup>								  
+								</select>
+								<span style="color:red" ng-show="journal_post_form.journal_id.$dirty"><span ng-show="journal_post_form.journal_id.$error.required">This is required.</span></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="submission_date" class="col-sm-2 control-label">Submission Date</label>
+							<div class="col-sm-4">
+								<input type="date" class="form-control" ng-model="fulltext_article.submission_date" id="submission_date" name="submission_date" required>								
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="publication_date" class="col-sm-2 control-label">Publication Date</label>
+							<div class="col-sm-4">
+								<input type="date" class="form-control" ng-model="fulltext_article.publication_date" id="publication_date" name="publication_date" required>								
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="accepted_date" class="col-sm-2 control-label">Accepted Date</label>
+							<div class="col-sm-4">
+								<input type="date" class="form-control" ng-model="fulltext_article.accepted_date" id="accepted_date" name="accepted_date" required>								
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="citation_volume" class="col-sm-2 control-label">Citation Volume</label>
+							<div class="col-sm-4">
+							    <input type="text" name="citation_volume" class="form-control" ng-model="fulltext_article.citation_volume" >	
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="citation_issue" class="col-sm-2 control-label">Citation Issue</label>
+							<div class="col-sm-4">
+							    <input type="text" name="citation_issue" class="form-control" ng-model="fulltext_article.citation_issue" >	
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="citation_firstpage" class="col-sm-2 control-label">Citation First Page</label>
+							<div class="col-sm-4">
+							    <input type="text" name="citation_firstpage" class="form-control" ng-model="fulltext_article.citation_firstpage" >	
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="citation_lastpage" class="col-sm-2 control-label">Citation Last Page</label>
+							<div class="col-sm-4">
+							    <input type="text" name="citation_lastpage" class="form-control" ng-model="fulltext_article.citation_lastpage" >	
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="authors" class="col-sm-2 control-label">Authors</label>
+							<div class="col-sm-4">
+							    <input type="text" name="authors" class="form-control" ng-model="fulltext_article.authors" >
+							    <p><i>Authors Should be in comma separed</i></p>
+							</div>
+						</div>
+						<div class="form-group" required="">
+							<label for="banner_image" class="col-sm-2 control-label">Fulltext Description</label>
+							<div class="col-sm-12" ng-if="fulltext_article.json_format == 0">								
+ 								<div class="row">
+ 									<div ng-app="textAngularTest" ng-controller="wysiwygeditor" class="container">
+										<text-angular name="post_content" ng-model="fulltext_article.post_content"></text-angular>
+									</div>
+ 								</div>
+							</div>
+							  <div ng-if="fulltext_article.json_format == 1" class="fulltext-section" id="fulltext-section">                                                 
+              <div ng-repeat="section in ftSections track by $index" class="col-sm-11 ft-section-wrap" ng-init=parentIndex=$index>
+                <div class="ft-section-box col-sm-11" id="ft-section-{{section.name}}">
+                  <div class="section-title">
+                    <input type="text" name="section.label" ng-model="section.label" />
+                    <span class="insertable-option" ng-repeat="option in section.insertableOptions" ng-click="addInsertableOption(option.name,section.name)">      {{option.label}}
+                    </span>
+                  </div>
+                  <div ng-if="section.tags.length > 0" class="ft-tags-box">
+                    <div class="form-group" ng-repeat="tag in section.tags">
+                      <div class="{{tag.name}}_box">
+                        <label for="{{tag.name}}" class="col-sm-12 control-label" ng-if="tag.label_show">{{tag.label}}</label>
+                        <div class="col-sm-11" ng-if="tag.name == 'paragraph_with_inline_heading' || tag.name == 'paragraph_with_block_heading'">
+                          <input type="text" name="markup[{{section.name}}][{{$index}}][{{tag.name}}][heading][]" class="form-control" ng-model="tag.child_tag[0].value" placeholder="Enter Heading" />
+                        </div>
+                        <div class="col-sm-11" ng-if="tag.name == 'figure_info_box'">                                                
+                          <!--- <div id="fulltext-server-{{$index}}" parentIndex="{{parentIndex}}" tempIndex="{{$index}}" uploads-files-to-server></div>
+                          <div ng-show="{{tag.child_tag[0].value !== ''}}" class="repopulate-uploaded-file">                    
+                            <ul class="qq-upload-list">
+                              <li><img height="100px" width="100px" src="http://www.avensonline.org/wp-content/uploads/{{tag.child_tag[0].value}}"></li>
+                              <li><span class="remove-file" ng-click="removeFile()"></span></li>
+                            </ul>
+                          </div> --->
+                          <input type="text" name="markup[{{section.name}}][{{$index}}][{{tag.name}}][heading][]" class="form-control" placeholder="Enter Link" ng-model="tag.child_tag[0].value"/>
+                        </div>
+                        
+                        <!--- <div class="col-sm-11" ng-if="tag.name == 'figure_box'">                                                
+                          <input type="text" name="markup[{{section.name}}][{{$index}}][{{tag.name}}][heading][]" class="form-control" placeholder="Enter heading" ng-model="tag.child_tag[0].value"/>
+                        </div>
+                        --->
+                        
+                        <div class="col-sm-11" ng-if="tag.name == 'reference_links'">
+                          <input type="text" name="markup[{{section.name}}][{{$index}}][{{tag.name}}][link][]" class="form-control" placeholder="Enter Link Text" ng-model="tag.child_tag[0].value"/>
+                        </div>
+                        <div class="col-sm-11">
+                          <textarea ng-if="tag.name !=='article_type'" class="form-control" name="markup[{{section.name}}][{{$index}}][{{tag.name}}][]" ng-model="tag.value" name="{{tag.name}}" placeholder="{{tag.placeholder}}"></textarea>
+                          <input ng-if="tag.name =='article_type'" class="form-control" name="markup[{{section.name}}][{{$index}}][{{tag.name}}][]" ng-model="tag.value" name="{{tag.name}}" placeholder="{{tag.placeholder}}" />
+                        </div>
+                        <div ng-if="tag.name !=='article_type'" class="col-sm-1 pad0">
+                          <!-- <i class="fa fa-minus" aria-hidden="true"></i> -->
+                          <div class="dropdown">               
+                            <i class="fa fa-plus" data-toggle="dropdown" aria-hidden="true"></i>
+                            <i class="fa fa-minus" ng-click="removeInsertableOption(section.label,$index)" aria-hidden="true"></i>                                                   
+                            <!-- <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Add<span class="caret"></span></button> -->
+                            <ul class="dropdown-menu pull-right">          
+                              <li ng-repeat="option in copyInsertableOptions" ng-click="addInsertableOption(option.name,section.name,$parent.$index)"><a>{{option.label}}</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>                                          
+                    </div>
+                  </div> 
+                </div>  
+                <div class="col-sm-1">                     
+                  <p class="section-icon plus" ng-click="addSection(section.name, $index)"><i class="fa fa-plus" aria-hidden="true"></i></p>
+                  <p ng-if="$index !== 0" class="section-icon minus" ng-click="removeSection(section.name, $index)"><i class="fa fa-minus" aria-hidden="true"></i></p>                     
+                </div>
+              </div>                                                                                           
+            </div>  
+						</div>
+						
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<input type="submit" ng-click="saveFulltext(fulltext_article)" name="insert" value="Save" class="btn btn-primary">
+								<span class="server-response"><span class="loader" ng-if="server_msg"></span><span ng-bind="server_msg"></span></span>
+							</div>
+						</div>
+					</form>						
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
