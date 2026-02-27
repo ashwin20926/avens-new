@@ -23,13 +23,14 @@ class Fulltextarticles extends CI_Controller {
                 $data['issn_number'] = $data['fulltext_info'][0]['issn_number']?$data['fulltext_info'][0]['issn_number']:"";
     			$data['doi_name'] = $data['fulltext_info'][0]['doi_name']?$data['fulltext_info'][0]['doi_name']:"";
     			$data['accepted_date'] = $data['fulltext_info'][0]['accepted_date']?$data['fulltext_info'][0]['accepted_date']:"";
+                $data['author_affliations'] = $data['fulltext_info'][0]['author_affliations']?$data['fulltext_info'][0]['author_affliations']:"";
                 if($data['fulltext_info'][0]['authors']) {
                     $data['authors'] = explode(',', $data['fulltext_info'][0]['authors']);
                 }
                 //print_r($data);exit;
     			$this->load->view('templates/fulltext_header', $data);
     			$this->load->view('pages/fulltextaricle_view.php', $data);
-    			$this->load->view('templates/footer', $data);
+    			$this->load->view('templates/fulltext_footer.php', $data);
             } else {
                 $this->load->view('404');
             }

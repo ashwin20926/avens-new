@@ -16,21 +16,27 @@
     <meta name="msapplication-TileImage" content="<?php echo base_url(); ?>fav-icons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <!--<meta name="description" content="<?php //echo isset($title) ? 'Avens Publishing Group - '.$title : 'Avens Publishing Group | Open Access Journals | Open Access Publications' ; ?>"/>-->
-    <meta name="keywords" content="<?php echo $meta_keywords;?>" />
-    
+    <meta name="citation_doi" content="<?php echo $citation_doi; ?>">
     <meta name="citation_title" content="<?php echo $title; ?>">
     <meta name="citation_journal_title" content="<?php echo $journal_name; ?>">
+    <meta name="robots" content="index, follow">
     <?php 
         if(!empty($authors) && isset($authors)) {
             foreach ($authors as $value) {
-              echo '<meta name="citation_author" content="'.$value.'">'."\n";
+              echo '<meta name="citation_author" content="'.trim($value).'">'."\n";
             }
         }
         if(!empty($publication_date) && isset($publication_date)) {
-            echo '<meta name="citation_publication_date" content="'.$publication_date.'">'."\n";
+
+            $timestamp = strtotime($publication_date);
+            $newDate = date("Y/m/d", $timestamp);
+
+            echo '<meta name="citation_publication_date" content="'.$newDate.'">'."\n";
         }
         if(!empty($accepted_date) && isset($accepted_date)) {
-            echo '<meta name="citation_online_date" content="'.$accepted_date.'">'."\n";
+            $timestamp = strtotime($accepted_date);
+            $newDate = date("Y/m/d", $timestamp);
+            echo '<meta name="citation_online_date" content="'.$newDate.'">'."\n";
         }
         if(!empty($citation_volume) && isset($citation_volume)) {
                 echo '<meta name="citation_volume" content="'.$citation_volume.'">'."\n";
@@ -39,10 +45,16 @@
                 echo '<meta name="citation_issue" content="'.$citation_issue.'">'."\n";
         }
         if(!empty($citation_firstpage) && isset($citation_firstpage)) {
+              if ($citation_firstpage < 10) {
+                $citation_firstpage = '0'.$citation_firstpage;
+            }
                 echo '<meta name="citation_firstpage" content="'.$citation_firstpage.'">'."\n";
         }
         if(!empty($citation_lastpage) && isset($citation_lastpage)) {
-                echo '<meta name="citation_lastpage" content="'.$citation_lastpage.'">'."\n";
+            if ($citation_lastpage < 10) {
+                $citation_lastpage = '0'.$citation_lastpage;
+            }
+            echo '<meta name="citation_lastpage" content="'.$citation_lastpage.'">'."\n";
         }
         if(!empty($issn_number) && isset($issn_number)) {
             echo '<meta name="citation_issn" content="'.$issn_number.'">'."\n";
@@ -51,48 +63,57 @@
             echo '<meta name="citation_doi" content="'.$doi_name.'">'."\n";
         }
     ?>
+    <?php 
+      $keywordsArray = explode(';', $meta_keywords);
+
+      foreach ($keywordsArray as $keyword) {
+          echo '<meta name="citation_keywords" content="'.trim($keyword).'">'."\n";
+      }
+    ?>
+    <?php 
+    if (!empty($author_affliations) && isset($author_affliations)) {
+        $affiliationsArray = json_decode($author_affliations, true);
+
+        if (is_array($affiliationsArray)) {
+            foreach ($affiliationsArray as $affiliation) {
+                echo '<meta name="citation_author_institution" content="'.trim($affiliation).'">'."\n";
+            }
+        }
+    }
+    ?>
     <meta name="citation_pdf_url" content="<?php echo base_url(); ?>wp-content/uploads/<?php echo $post_title; ?>.pdf">
     <meta name="citation_fulltext_html_url" content="<?php echo base_url(); ?>fulltextarticles/<?php echo $post_title; ?>.html">
     <meta name="citation_publisher" content="Avens Publishing Group">
     <meta name="citation_language" content="en">
+    <?php 
+        if ($json_format === '1') {
+            foreach (json_decode($fulltext_info[0]['post_content']) as $key => $value) {
+                foreach ($value->tags as $k1 => $v1) {           
+                    if($v1->name == 'article_type') {
+                        echo '<meta name="citation_article_type" content="'.$v1->value.'">'."\n";
+                    }              
+                }
+            }
+            echo '<meta name="citation_abstract_html_url" content="'.base_url().'abstract/'.$post_browser_title_slug.'">'."\n";
+        }
+    ?>
 
     <!--[if lt IE 9]>
     <script src="<?php echo base_url(); ?>wp-content/themes/twentythirteen/js/html5.js"></script>
     <![endif]-->
-    <title><?php echo isset($title) ? 'Avens Publishing Group - '.$title : 'Avens Publishing Group | Open Access Journals | Open Access Publications' ; ?></title>
-    
+    <title><?php echo isset($title) ? 'Avens Publishing Group - '.$title : 'Avens Publishing Group | Open Access Journals | Open Access Publications' ; ?></title>    
     <link href='https://fonts.googleapis.com/css?family=Kreon:300,400,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' id='genericons-css'  href='<?php echo base_url(); ?>public/css/genericons.css' type='text/css' media='all' />
     <link rel='stylesheet' id='twentythirteen-style-css'  href='<?php echo base_url(); ?>public/css/style.css' type='text/css' media='all' />
-    <!--[if lt IE 9]>
-    <link rel='stylesheet' id='twentythirteen-ie-css'  href='<?php echo base_url(); ?>wp-content/themes/twentythirteen/css/ie.css?ver=2013-07-18' type='text/css' media='all' />
-    <![endif]-->
     <link rel='stylesheet' id='avhec-widget-css'  href='<?php echo base_url(); ?>public/css/avh-ec.widget.css' type='text/css' media='all' />
-    
-    
-    <link rel="apple-touch-icon" sizes="57x57" href="<?php echo base_url(); ?>fav-icons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="<?php echo base_url(); ?>fav-icons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="<?php echo base_url(); ?>fav-icons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="<?php echo base_url(); ?>fav-icons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="<?php echo base_url(); ?>fav-icons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="<?php echo base_url(); ?>fav-icons/apple-icon-120x120.png">
     <link rel="apple-touch-icon" sizes="144x144" href="<?php echo base_url(); ?>fav-icons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="<?php echo base_url(); ?>fav-icons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url(); ?>fav-icons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="<?php echo base_url(); ?>fav-icons/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo base_url(); ?>fav-icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url(); ?>fav-icons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo base_url(); ?>fav-icons/favicon-16x16.png">
-    <link rel="manifest" href="<?php echo base_url(); ?>fav-icons/manifest.json">
-    
-    
+    <link rel="manifest" href="<?php echo base_url(); ?>fav-icons/manifest.json">        
     <link href="<?php echo base_url(); ?>public/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/theme.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/responsive.css">
-    <!--<link rel="stylesheet" href="<?php echo base_url(); ?>fulltextarticles/wp-content/themes/twentytwelve/theme.css">-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5a9b9d3369eea20013a19701&product=social-ab' async='async'></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/css/fulltext.css">
 </head>
 <body class="blog single-author sidebar">
 <div id="page" class="hfeed site">

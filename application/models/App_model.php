@@ -76,6 +76,8 @@ class App_model extends CI_Model {
     
     function get_abstract_info($title) {
     	if(isset($title) && !empty($title)) {
+			$pdf = $this->db->query('SELECT post_title FROM wp_fulltextarticles WHERE post_browser_title_slug = "'.$title.'" AND deleted="1"')->result_array();
+			//print_r($pdf[0]['post_title']);exit;
     		$query = $this->db->query('
     		SELECT 
     		ft.accepted_date, 
@@ -90,11 +92,16 @@ class App_model extends CI_Model {
     		ft.post_title, 
     		ft.post_browser_title,
     		ft.post_meta_keywords,
+			ft.post_browser_title_slug,
+			ft.json_format,
     		j.issn_number,
     		j.journal_name,
-    		j.banner_image, 
+    		j.banner_image,
+			wa.doi_name,
+			ft.author_affliations,
     		j.sidebar_image FROM wp_fulltextarticles ft 
     		LEFT JOIN wp_journals j ON ft.journal_id = j.id 
+			LEFT JOIN wp_journal_archives wa ON wa.archive_pdf = "'.$pdf[0]['post_title'].'.pdf"
     		WHERE ft.post_browser_title_slug ="'.$title.'" AND ft.deleted="1"');
     		return $query->result_array();					
     	}
@@ -233,7 +240,7 @@ function get_eb_info ($cat_name,$journal_name,$post_name) {
 function get_fulltext_info($title) {
 	$temp = explode(".", $title);	
 	if(isset($title) && !empty($title)) {
-		$query  = $this->db->query('SELECT wa.doi_name, wa.archive_doi, ft.accepted_date, ft.publication_date,ft.citation_volume,ft.authors,ft.citation_issue,ft.citation_firstpage,ft.citation_lastpage,ft.json_format, ft.post_content,ft.post_title, ft.post_browser_title,ft.post_meta_keywords,j.issn_number,j.journal_name,j.banner_image, j.sidebar_image FROM wp_fulltextarticles ft LEFT JOIN wp_journals j ON ft.journal_id = j.id LEFT JOIN wp_journal_archives wa ON wa.archive_pdf = "'.$temp[0].'.pdf" WHERE ft.post_title ="'.$temp[0].'" AND ft.deleted="1"');
+		$query  = $this->db->query('SELECT wa.doi_name, wa.archive_doi, ft.author_affliations, ft.accepted_date, ft.publication_date,ft.citation_volume,ft.authors,ft.citation_issue,ft.citation_firstpage,ft.citation_lastpage,ft.json_format, ft.post_content,ft.post_title, ft.post_browser_title,ft.post_meta_keywords,j.issn_number,j.journal_name,j.banner_image, j.sidebar_image FROM wp_fulltextarticles ft LEFT JOIN wp_journals j ON ft.journal_id = j.id LEFT JOIN wp_journal_archives wa ON wa.archive_pdf = "'.$temp[0].'.pdf" WHERE ft.post_title ="'.$temp[0].'" AND ft.deleted="1"');
 
 		return $query->result_array();					
 	}
@@ -270,7 +277,7 @@ function generate_sitemap_fulltext_and_pdf(){
 }
 
 function generate_sitemap_abstract() {
-	$query = $this->db->query('SELECT post_browser_title, post_browser_title_slug, publication_date FROM wp_fulltextarticles WHERE publication_date !=" " AND json_format="1" AND deleted="1"');	
+	$query = $this->db->query('SELECT post_browser_title, author_affliations,post_browser_title_slug, publication_date FROM wp_fulltextarticles WHERE publication_date !=" " AND json_format="1" AND deleted="1"');	
 	return $query->result_array();
 }
 
