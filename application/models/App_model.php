@@ -240,7 +240,7 @@ function get_eb_info ($cat_name,$journal_name,$post_name) {
 function get_fulltext_info($title) {
 	$temp = explode(".", $title);	
 	if(isset($title) && !empty($title)) {
-		$query  = $this->db->query('SELECT wa.doi_name, wa.archive_doi, ft.author_affliations, ft.accepted_date, ft.publication_date,ft.citation_volume,ft.authors,ft.citation_issue,ft.citation_firstpage,ft.citation_lastpage,ft.json_format, ft.post_content,ft.post_title, ft.post_browser_title,ft.post_meta_keywords,j.issn_number,j.journal_name,j.banner_image, j.sidebar_image FROM wp_fulltextarticles ft LEFT JOIN wp_journals j ON ft.journal_id = j.id LEFT JOIN wp_journal_archives wa ON wa.archive_pdf = "'.$temp[0].'.pdf" WHERE ft.post_title ="'.$temp[0].'" AND ft.deleted="1"');
+		$query  = $this->db->query('SELECT wa.doi_name, wa.archive_doi, ft.post_browser_title_slug, ft.author_affliations, ft.accepted_date, ft.publication_date,ft.citation_volume,ft.authors,ft.citation_issue,ft.citation_firstpage,ft.citation_lastpage,ft.json_format, ft.post_content,ft.post_title, ft.post_browser_title,ft.post_meta_keywords,j.issn_number,j.journal_name,j.banner_image, j.sidebar_image FROM wp_fulltextarticles ft LEFT JOIN wp_journals j ON ft.journal_id = j.id LEFT JOIN wp_journal_archives wa ON wa.archive_pdf = "'.$temp[0].'.pdf" WHERE ft.post_title ="'.$temp[0].'" AND ft.deleted="1"');
 
 		return $query->result_array();					
 	}

@@ -14,7 +14,7 @@ class Fulltextarticles extends CI_Controller {
                 //$data['journal_name'] = $data['fulltext_info'][0]['post_meta_keywords']?$data['fulltext_info'][0]['post_meta_keywords']:"";
                 $data['journal_name'] = $data['fulltext_info'][0]['journal_name']?$data['fulltext_info'][0]['journal_name']:"";
                 $data['post_title'] = $data['fulltext_info'][0]['post_title']?$data['fulltext_info'][0]['post_title']:"";
-                
+                $data['json_format'] = $data['fulltext_info'][0]['json_format']?$data['fulltext_info'][0]['json_format']:"";
                 $data['publication_date'] = $data['fulltext_info'][0]['publication_date']?$data['fulltext_info'][0]['publication_date']:"";
                 $data['citation_volume'] = $data['fulltext_info'][0]['citation_volume']?$data['fulltext_info'][0]['citation_volume']:"";
                 $data['citation_issue'] = $data['fulltext_info'][0]['citation_issue']?$data['fulltext_info'][0]['citation_issue']:"";
@@ -24,6 +24,7 @@ class Fulltextarticles extends CI_Controller {
     			$data['doi_name'] = $data['fulltext_info'][0]['doi_name']?$data['fulltext_info'][0]['doi_name']:"";
     			$data['accepted_date'] = $data['fulltext_info'][0]['accepted_date']?$data['fulltext_info'][0]['accepted_date']:"";
                 $data['author_affliations'] = $data['fulltext_info'][0]['author_affliations']?$data['fulltext_info'][0]['author_affliations']:"";
+                $data['post_browser_title_slug'] = $data['fulltext_info'][0]['post_browser_title_slug']?$data['fulltext_info'][0]['post_browser_title_slug']:"";
                 if($data['fulltext_info'][0]['authors']) {
                     $data['authors'] = explode(',', $data['fulltext_info'][0]['authors']);
                 }

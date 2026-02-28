@@ -14,7 +14,23 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="<?php echo base_url(); ?>fav-icons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    <meta name="keywords" content="<?php echo $meta_keywords; ?>" >
+     <?php 
+      $keywordsArray = explode(';', $meta_keywords);
+
+      foreach ($keywordsArray as $keyword) {
+          echo '<meta name="citation_keywords" content="'.trim($keyword).'">'."\n";
+      }
+
+      if (!empty($author_affliations) && isset($author_affliations)) {
+        $affiliationsArray = json_decode($author_affliations, true);
+
+        if (is_array($affiliationsArray)) {
+            foreach ($affiliationsArray as $affiliation) {
+                echo '<meta name="citation_author_institution" content="'.trim($affiliation).'">'."\n";
+            }
+        }
+    }
+    ?>
     
     <meta name="citation_title" content="<?php echo $title; ?>">
     <?php
@@ -81,6 +97,17 @@
     if (!empty($doi_name) && isset($doi_name)) {
         echo '<meta name="citation_doi" content="' . $doi_name . '">' . "\n";
     }
+
+      if ($json_format === '1') {
+            foreach (json_decode($fulltext_info[0]['post_content']) as $key => $value) {
+                foreach ($value->tags as $k1 => $v1) {           
+                    if($v1->name == 'article_type') {
+                        echo '<meta name="citation_article_type" content="'.$v1->value.'">'."\n";
+                    }              
+                }
+            }
+            echo '<meta name="citation_abstract_html_url" content="'.base_url().'abstract/'.$post_browser_title_slug.'">'."\n";
+        }
     ?>
     <meta name="citation_pdf_url" content="https://www.avensonline.org/wp-content/uploads/<?php echo $post_title; ?>.pdf">
     <meta name="citation_fulltext_html_url" content="<?php echo base_url(); ?>fulltextarticles/<?php echo $post_title; ?>.html">
